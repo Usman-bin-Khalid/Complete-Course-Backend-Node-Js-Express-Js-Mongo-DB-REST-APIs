@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "tailwindcss": "^4.1.12"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.12"
+  }
+}

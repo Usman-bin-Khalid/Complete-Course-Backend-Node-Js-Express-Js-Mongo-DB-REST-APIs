@@ -1,0 +1,1 @@
+{"name":"Usman bin Khalid","email":"usmanbinkhalidpk@gmail.com","phone":"03177694109","address":"House # 10","city":"Sargodha","country":"Pakistan","zip":"40100","gender":"male"}

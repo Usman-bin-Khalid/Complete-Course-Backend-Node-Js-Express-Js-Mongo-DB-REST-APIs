@@ -3,7 +3,7 @@ const Home = require("../models/home");
 exports.getAddHome = (req, res, next) => {
   console.log(req.url, req.method);
 
-  res.render("host/edit-home", {editing: false });
+  res.render("host/edit-home", { editing: false });
 };
 
 exports.getEditHome = (req, res, next) => {
@@ -17,9 +17,11 @@ exports.getEditHome = (req, res, next) => {
     console.log(homeId, editing, home);
     console.log(req.url, req.method);
 
-    res.render("host/edit-home", 
-    
-      { editing: editing , home : home });
+    res.render(
+      "host/edit-home",
+
+      { editing: editing, home: home }
+    );
   });
 };
 exports.postAddHome = (req, res, next) => {
@@ -52,14 +54,18 @@ exports.postEditHome = (req, res, next) => {
     req.body.rating,
     req.body.photoUrl
   );
-  home.id = id,
-  home.save();
+  (home.id = id), home.save();
   res.redirect("/host/host-home-list");
 };
 
 exports.postDeleteHome = (req, res, next) => {
   const homeId = req.params.homeId;
   console.log("Came to delete home", homeId);
- 
-  res.redirect("/host/host-home-list");
+  Home.deleteById(homeId, (error) => {
+    if (error) {
+      console.log("Error while deleting", error);
+    }
+    res.redirect("/host/host-home-list");
+  });
 };
+

@@ -51,6 +51,8 @@ exports.postRemoveFromFavourite = (req, res, next) => {
   })
 };
 
+
+
 exports.getHomeDetails = (req, res, next) => {
   const homeId = req.params.homeId;
   console.log("At home details page", homeId);

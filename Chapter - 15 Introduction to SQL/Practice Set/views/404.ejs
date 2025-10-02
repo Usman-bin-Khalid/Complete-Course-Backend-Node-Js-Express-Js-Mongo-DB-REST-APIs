@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page Not Found - Airbnb</title>
+  <link href="/output.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <!-- Include Header Partial -->
+  <%- include('partials/header') %>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="bg-white shadow-md rounded-lg p-8">
+      <!-- 404 Icon -->
+      <div class="mb-6 text-center">
+        <svg class="w-25 h-25 mx-auto text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 200px; height: 200px;">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.29-1.009-5.824-2.709M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+        </svg>
+      </div>
+      
+      <!-- 404 Title -->
+      <h1 class="text-6xl font-bold text-red-600 mb-4 text-center">404</h1>
+      
+      <!-- Error Message -->
+      <h2 class="text-2xl font-semibold text-gray-800 mb-4 text-center">Page Not Found</h2>
+      <p class="text-gray-600 mb-8 max-w-md mx-auto text-center">
+        Sorry, the page you're looking for doesn't exist on Airbnb. It might have been moved, deleted, or you entered the wrong URL.
+      </p>
+   
+   
+    <br>
+   
+    </div>
+  </main>
+</body>
+</html>

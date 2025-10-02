@@ -1,0 +1,4 @@
+Sum: 30
+Product: 200
+Difference: -10
+Quotient: 0.5

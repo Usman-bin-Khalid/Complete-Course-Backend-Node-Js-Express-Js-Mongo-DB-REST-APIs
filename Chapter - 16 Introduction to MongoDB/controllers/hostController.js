@@ -10,8 +10,8 @@ exports.getAddHome = (req, res, next) => {
 exports.getEditHome = (req, res, next) => {
   const homeId = req.params.homeId;
   const editing = req.query.editing === "true";
-  Home.findById(homeId).then(([homes]) => {
-    const home = homes[0];
+  Home.findById(homeId).then(home => {
+    
     if (!home) {
       console.log("Home not found for editing");
       return res.redirect("/host/host-home-list");
@@ -38,14 +38,18 @@ exports.postAddHome = (req, res, next) => {
     req.body.photoUrl,
     req.body.description
   );
+
   home.save().then(() => {
-    console.log('Home Saved Successfully');
+    console.log('Home Saved Successfully'); // If database created and add home in database 
+    // than this log will show
   });
   res.redirect("/host/host-home-list");
 };
 
+
+
 exports.getHostHomes = (req, res, next) => {
-  const registeredHome = Home.fetchAll().then(([registeredHome]) => {
+  const registeredHome = Home.fetchAll().then(registeredHome => {
     res.render("host/host-home-list", { registeredHome: registeredHome });
   });
 };

@@ -21,7 +21,7 @@
       <!-- Form Container -->
       <div class="max-w-md mx-auto">
         <form action="/host/<%= editing ? 'edit-home' : 'add-home' %>" method="POST" class="space-y-6">
-          <input type="hidden" name="id" value="<%= editing ? home.id : '' %>" />
+          <input type="hidden" name="id" value="<%= editing ? home._id : '' %>" />
           <!-- House Name Input -->
           
             <input 

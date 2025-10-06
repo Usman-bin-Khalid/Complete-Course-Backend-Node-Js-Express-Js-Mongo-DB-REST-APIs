@@ -69,7 +69,9 @@ const home = new Home(
   req.body.id           // id (last)
 );
 
-  home.save();
+  home.save().then(result => {
+    console.log('Home Updated :', result);
+  });
   res.redirect("/host/host-home-list");
 };
 

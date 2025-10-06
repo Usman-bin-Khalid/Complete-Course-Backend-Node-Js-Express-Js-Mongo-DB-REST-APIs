@@ -18,7 +18,24 @@ module.exports = class Home {
 
   save() {
     const db = getDB();
-    return db.collection("homes").insertOne(this);
+
+    if(this._id) { // Update
+      const updateFields = {
+        houseName : this.houseName,
+        price : this.price,
+        location : this.location,
+        rating : this.rating,
+        photoUrl : this.photoUrl,
+        description : this.description
+
+      }
+      return db.collection('homes').updateOne({_id : new ObjectId(String(this._id))},
+    {$set : updateFields}
+    )
+    }else { // Create
+return db.collection("homes").insertOne(this);
+    }
+    
   }
 
  
@@ -33,5 +50,9 @@ module.exports = class Home {
     return db.collection('homes').find({_id : new ObjectId(String(homeId)) }).next();
   }
 
-  static deleteById(homeId) {}
+  static deleteById(homeId) {
+    const db = getDB();
+    return db.collection('homes').deleteOne({_id : new ObjectId(String(homeId))});
+
+  }
 };

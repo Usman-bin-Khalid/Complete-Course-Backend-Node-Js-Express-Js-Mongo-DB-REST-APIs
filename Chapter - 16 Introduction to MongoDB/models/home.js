@@ -9,50 +9,62 @@ module.exports = class Home {
     this.rating = rating;
     this.photoUrl = photoUrl;
     this.description = description;
-    if(_id) {
+    if (_id) {
       this._id = _id;
-
     }
-
   }
 
   save() {
     const db = getDB();
 
-    if(this._id) { // Update
+    if (this._id) {
+      // Update
       const updateFields = {
-        houseName : this.houseName,
-        price : this.price,
-        location : this.location,
-        rating : this.rating,
-        photoUrl : this.photoUrl,
-        description : this.description
-
-      }
-      return db.collection('homes').updateOne({_id : new ObjectId(String(this._id))},
-    {$set : updateFields}
-    )
-    }else { // Create
-return db.collection("homes").insertOne(this);
+        houseName: this.houseName,
+        price: this.price,
+        location: this.location,
+        rating: this.rating,
+        photoUrl: this.photoUrl,
+        description: this.description,
+      };
+      return db
+        .collection("homes")
+        .updateOne(
+          { _id: new ObjectId(String(this._id)) },
+          { $set: updateFields }
+        );
+    } else {
+      // Create
+      return db.collection("homes").insertOne(this);
     }
-    
   }
 
  
 
   static fetchAll() {
-    const db =getDB();
-    return db.collection('homes').find().toArray();
+    const db = getDB();
+    return db.collection("homes").find().toArray();
   }
+
+  
 
   static findById(homeId) {
     const db = getDB();
-    return db.collection('homes').find({_id : new ObjectId(String(homeId)) }).next();
+    return db
+      .collection("homes")
+      .find({ _id: new ObjectId(String(homeId)) })
+      .next();
   }
+
 
   static deleteById(homeId) {
     const db = getDB();
-    return db.collection('homes').deleteOne({_id : new ObjectId(String(homeId))});
-
+    return db
+      .collection("homes")
+      .deleteOne({ _id: new ObjectId(String(homeId)) });
   }
+
+ 
 };
+
+   

@@ -33,14 +33,19 @@ exports.getFavouritesList = (req, res, next) => {
 };
 
 exports.postAddToFavourite = (req, res, next) => {
-  console.log("Came to add to Favourites ", req.body);
-  Favourite.addToFavourite(req.body.id, (err) => {
-    if (err) {
-      console.log("Error while marking favourite ", err);
-    }
-    res.redirect("/favourites");
-  });
+  const homeId = req.body.id; 
+  const fav = new Favourite(homeId);
+  fav.save().then(result => {
+    console.log('Fav added : ' , result);
+  }).catch(err => {
+    console.log('Error while marking favourite : ' , err).finally(() => {
+      res.redirect("/favourites");
+    });
+  })
 };
+
+
+
 
 exports.postRemoveFromFavourite = (req, res, next) => {
   const homeId = req.params.homeId;

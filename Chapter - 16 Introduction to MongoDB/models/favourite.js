@@ -12,7 +12,9 @@ module.exports = class Favourite {
   }
 
   
-  static getFavourites(callBack) {
+  static getFavourites() {
+    const db = getDB();
+    return db.collection('homes').find().toArray();
   
   }
 

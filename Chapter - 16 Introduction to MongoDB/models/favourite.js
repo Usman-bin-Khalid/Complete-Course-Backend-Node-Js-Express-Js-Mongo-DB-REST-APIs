@@ -1,3 +1,4 @@
+const { ObjectId } = require("mongodb");
 const { getDB } = require("../utils/databaseUtil");
 
 module.exports = class Favourite {
@@ -8,7 +9,15 @@ module.exports = class Favourite {
 
   save() {
     const db = getDB();
-    return db.collection('favourites').insertOne(this);
+    return db.collection('favourites').findOne({houseId : this.houseId
+
+    }).then(existingFav => {
+      if(!existingFav) {
+        return db.collection('favourites').insertOne(this);
+      }
+      return Promise.resolve();
+    })
+  
   }
 
   
@@ -18,7 +27,9 @@ module.exports = class Favourite {
   
   }
 
-  static deleteById(delHomeId, callback) {
+  static deleteById(delHomeId) {
+    const db = getDB();
+    return db.collection('favourites').deleteOne({houseId: delHomeId});
    
   }
 

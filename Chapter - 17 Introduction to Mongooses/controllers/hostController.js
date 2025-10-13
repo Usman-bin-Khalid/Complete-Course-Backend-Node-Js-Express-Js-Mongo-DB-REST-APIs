@@ -30,14 +30,14 @@ exports.postAddHome = (req, res, next) => {
   console.log("Home Registration Successfull", req.body);
   const { houseName, price, location, rating, photoUrl, description } =
     req.body;
-  const home = new Home(
-    req.body.houseName,
-    req.body.price,
-    req.body.location,
-    req.body.rating,
-    req.body.photoUrl,
-    req.body.description
-  );
+  const home = new Home({
+    houseName,
+    price,
+    location,
+    rating,
+    photoUrl,
+   description
+});
 
   home.save().then(() => {
     console.log('Home Saved Successfully'); // If database created and add home in database 
@@ -49,7 +49,7 @@ exports.postAddHome = (req, res, next) => {
 
 
 exports.getHostHomes = (req, res, next) => {
-  const registeredHome = Home.fetchAll().then(registeredHome => {
+  const registeredHome = Home.find().then(registeredHome => {
     res.render("host/host-home-list", { registeredHome: registeredHome });
   });
 };

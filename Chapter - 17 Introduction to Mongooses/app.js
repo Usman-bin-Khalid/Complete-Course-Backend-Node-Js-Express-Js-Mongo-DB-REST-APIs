@@ -40,7 +40,7 @@ app.use(express.static(path.join(rootDir, 'public')));
 
 // Errors waly controller ko import kia hy
 const errorsController = require('./controllers/errors');
-const {mongoConnect} = require('./utils/databaseUtil');
+
 const { default: mongoose } = require('mongoose');
 app.use(errorsController.pageNotFount);
 

@@ -4,7 +4,11 @@ const Home = require("../models/home");
 exports.getAddHome = (req, res, next) => {
   console.log(req.url, req.method);
 
-  res.render("host/edit-home", { editing: false });
+  res.render("host/edit-home", { editing: false ,isLoggedIn : req.isLoggedIn},
+
+
+
+  );
 };
 
 exports.getEditHome = (req, res, next) => {
@@ -20,8 +24,9 @@ exports.getEditHome = (req, res, next) => {
 
     res.render(
       "host/edit-home",
+     
 
-      { editing: editing, home: home }
+      { editing: editing, home: home, isLoggedIn : req.isLoggedIn }
     );
   });
 };
@@ -47,7 +52,9 @@ exports.postAddHome = (req, res, next) => {
 
 exports.getHostHomes = (req, res, next) => {
   const registeredHome = Home.find().then((registeredHome) => {
-    res.render("host/host-home-list", { registeredHome: registeredHome });
+    res.render("host/host-home-list",
+
+      { registeredHome: registeredHome, isLoggedIn : req.isLoggedIn});
   });
 };
 

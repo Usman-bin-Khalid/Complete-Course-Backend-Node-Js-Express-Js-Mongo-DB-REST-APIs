@@ -32,7 +32,14 @@ app.use(storeRouter);
 
 // Host Router wala sara code hostRouter wali file 
 // mai chla gya hy
-app.use("/host" , hostRouter);
+// app.use("/host" , hostRouter);
+app.use('/host' , (req, res, next) => {
+  if(req.isLoggedIn) {
+    next();
+  } else {
+  res.redirect('/login')
+  }
+});
 app.use(authRouter);
 
 // Yhan pr direct file tk pounch skty hyn

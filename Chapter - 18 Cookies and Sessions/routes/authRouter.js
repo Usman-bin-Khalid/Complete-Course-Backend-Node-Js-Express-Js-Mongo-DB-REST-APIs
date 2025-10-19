@@ -9,6 +9,7 @@ const authRouter = express.Router();
 // Controllers ky liy export
 const authController = require("../controllers/authController");
 authRouter.get("/login", authController.getLogin);
+authRouter.post('/login' , authController.postLogin);
 
 
 

@@ -26,6 +26,14 @@ app.use((req, res , next) => {
 // Body parsing ky liy 
 app.use(express.urlencoded());
 
+// Cookie Set krny ky liy
+app.use((req, res, next) => {
+  req.isLoggedIn = req.get('Cookie') ? req.get('Cookie').split('=')[1] === 'true' : false;
+  next();
+});
+
+
+
 // By default routing ('/') wala jo code tha wo ab
 // userRouter sy ay ga hum sy simple isko call kr lia hy 
 app.use(storeRouter);

@@ -3,6 +3,11 @@ const path = require('path'); // HTML ki file ko import krny ky liy
 
 // External Module
 const express = require('express');
+const session = require('express-session');
+// Saving Session in MongoDB
+const MongoDBStore = require('connect-mongodb-session')(session);
+const DB_Path = 'mongodb+srv://root:root@completecoding.mptdmv7.mongodb.net/airbnb?retryWrites=true&w=majority&appName=CompleteCoding'
+
 
 
 // Local Module
@@ -17,6 +22,11 @@ const app = express();
  // HTML ko dynamic krny ky liy ejs ko initialize kia hy
 app.set('view engine' , 'ejs');
 app.set('views' , 'views');
+
+const store = new MongoDBStore({uri : DB_Path,
+collection : 'sessions'
+
+});
 // Console krny ky liy
 app.use((req, res , next) => {
  console.log(req.url, req.method);
@@ -26,13 +36,21 @@ app.use((req, res , next) => {
 // Body parsing ky liy 
 app.use(express.urlencoded());
 
+// Session set krny ky liy
+app.use(session({
+  secret : 'Complete Backend With Node JS',
+  resave : false,
+  saveUninitialized : true,
+  store : store
+}));
+
+
+
 // Cookie Set krny ky liy
 app.use((req, res, next) => {
-  req.isLoggedIn = req.get('Cookie') ? req.get('Cookie').split('=')[1] === 'true' : false;
+  req.isLoggedIn = req.session.isLoggedIn
   next();
 });
-
-
 
 // By default routing ('/') wala jo code tha wo ab
 // userRouter sy ay ga hum sy simple isko call kr lia hy 
@@ -58,14 +76,13 @@ app.use(express.static(path.join(rootDir, 'public')));
 // Errors waly controller ko import kia hy
 const errorsController = require('./controllers/errors');
 
-const { default: mongoose } = require('mongoose');
-app.use(errorsController.pageNotFount);
+const { default: mongoose, Collection } = require('mongoose');
+const { url } = require('inspector');
+app.use(errorsController.pageNotFound);
 
 
 const PORT = 3000;
 
-
-const DB_Path = 'mongodb+srv://root:root@completecoding.mptdmv7.mongodb.net/airbnb?retryWrites=true&w=majority&appName=CompleteCoding'
 mongoose.connect(DB_Path).then(() => {
   console.log('Connecting to MongoDB')
 app.listen(PORT, () => {

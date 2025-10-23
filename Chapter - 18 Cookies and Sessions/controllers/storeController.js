@@ -10,6 +10,7 @@ exports.getHome = (req, res, next) => {
 };
 
 exports.getIndex = (req, res, next) => {
+  console.log('Session Value ' , req.session)
   Home.find().then(registeredHome => {
   res.render("store/index", 
     

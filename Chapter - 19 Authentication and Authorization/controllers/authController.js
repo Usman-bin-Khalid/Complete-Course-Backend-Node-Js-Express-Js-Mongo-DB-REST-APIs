@@ -12,6 +12,14 @@ exports.getSignup = (req, res, next) =>
      isLoggedIn : false
    }); 
 };
+
+
+exports.postSignup = (req, res , next) => {
+  console.log(req.body);
+  req.session.isLoggedIn = true;
+
+  res.redirect('/login');
+}
 exports.postLogin = (req, res , next) => {
   console.log(req.body);
   req.session.isLoggedIn = true;

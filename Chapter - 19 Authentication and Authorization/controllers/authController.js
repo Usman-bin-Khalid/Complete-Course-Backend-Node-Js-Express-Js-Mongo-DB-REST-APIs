@@ -1,3 +1,5 @@
+const { check } = require("express-validator");
+
 exports.getLogin = (req, res, next) => 
   { console.log(req.url, req.method);
  res.render("auth/login", {
@@ -14,12 +16,33 @@ exports.getSignup = (req, res, next) =>
 };
 
 
-exports.postSignup = (req, res , next) => {
+exports.postSignup = [
+  check('firstname').trim().isLength({min : 2}).withMessage(`First name must be at least
+    2 characters long`).matches(/^[A-Za-z\s]+$/).withMessage('First name should contain only alphabets'),
+  check('lastname').matches(/^[A-Za-z\s]*$/).withMessage('Last name should contain only alphabets'),
+  check('email').isEmail().withMessage('Please enter a valid email').normalizeEmail(),
+  check('password').isLength({min : 8}).withMessage('Password should be atleast 8 characters long').matches(/[A-Z]/).withMessage('Password should contain at least one upper case letter').matches(/[a-z]/).withMessage('Password should contain atleast one lower case letter').matches(/[0-9]/).withMessage('Password should contain atleast one number')
+  .matches('/[!@$]/').withMessage('Password must contain atleast one special character').trim(),
+  check('confirmPassword').trim().custom((value, {req}) => {
+    if(value !== req.body.password) {
+      throw new Error('Password do not match');
+    }
+    return true;
+  }),
+  check('userType').notEmpty().withMessage('Please select a user type').isIn(['guest' , 'host']).withMessage('Invalid user type'),
+  check('terms').notEmpty().withMessage('Please accept the terms and conditions').custom((value, {req}) => {
+    if (value !== 'on') {
+      throw new Error('Please accept the terms and conditions');
+    }
+    return true;
+  }),
+
+    (req, res , next) => {
   console.log(req.body);
   req.session.isLoggedIn = true;
 
   res.redirect('/login');
-}
+} ]
 exports.postLogin = (req, res , next) => {
   console.log(req.body);
   req.session.isLoggedIn = true;

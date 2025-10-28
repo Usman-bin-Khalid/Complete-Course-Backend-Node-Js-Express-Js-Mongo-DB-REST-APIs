@@ -1,4 +1,4 @@
-const { check } = require("express-validator");
+const { check, validationResult } = require("express-validator");
 
 exports.getLogin = (req, res, next) => 
   { console.log(req.url, req.method);
@@ -11,8 +11,11 @@ exports.getLogin = (req, res, next) =>
 exports.getSignup = (req, res, next) => 
   { console.log(req.url, req.method);
  res.render("auth/signup", {
-     isLoggedIn : false
+     isLoggedIn : false,
+     errors : [],
+     oldInput : {firstname : '', lastname : '', userType : '' , password : ''}
    }); 
+
 };
 
 
@@ -38,12 +41,23 @@ exports.postSignup = [
   }),
 
     (req, res , next) => {
-  console.log(req.body);
-  req.session.isLoggedIn = true;
+        const {firstname, lastname, email, password ,  userType,
+    
+  } = req.body;
+  const errors = validationResult(req);
+  if(!errors.isEmpty()) {
+    return res.status(422).render('auth/signup', {
+      isLoggedIn: false,
+      errors : errors.array().map(err => err.msg),
+      oldInput : {firstname, lastname, email, userType} 
+    })
+  }
+
 
   res.redirect('/login');
 } ]
 exports.postLogin = (req, res , next) => {
+
   console.log(req.body);
   req.session.isLoggedIn = true;
   // res.cookie('isLoggedIn' , true);

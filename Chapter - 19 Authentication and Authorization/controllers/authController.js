@@ -1,5 +1,6 @@
 const { check, validationResult } = require("express-validator");
 const User = require('../models/user');
+const bcrypt = require('bcryptjs')
 
 exports.getLogin = (req, res, next) => 
   { console.log(req.url, req.method);
@@ -26,7 +27,7 @@ exports.postSignup = [
   check('lastname').matches(/^[A-Za-z\s]*$/).withMessage('Last name should contain only alphabets'),
   check('email').isEmail().withMessage('Please enter a valid email').normalizeEmail(),
   check('password').isLength({min : 8}).withMessage('Password should be atleast 8 characters long').matches(/[A-Z]/).withMessage('Password should contain at least one upper case letter').matches(/[a-z]/).withMessage('Password should contain atleast one lower case letter').matches(/[0-9]/).withMessage('Password should contain atleast one number')
-  .matches('/[!@$]/').withMessage('Password must contain atleast one special character').trim(),
+  .matches(/[!@$]/).withMessage('Password must contain atleast one special character').trim(),
   check('confirmPassword').trim().custom((value, {req}) => {
     if(value !== req.body.password) {
       throw new Error('Password do not match');
@@ -53,13 +54,20 @@ exports.postSignup = [
       oldInput : {firstname, lastname, email, userType} 
     });
   }
-   const user = new User ({firstname, lastname, email, password, userType});
-   user.save().then(()  => {
-    res.redirect('/login')
-   }).catch(err => {
-     console.log('Error while saving error : ' , err);
-     res.redirect('/signup');
-   })
+    bcrypt.hash(password, 12).then(hashedPassword => {
+      const user = new User({firstname, lastname, email, password : hashedPassword, userType});
+      return user.save();
+
+    }).then(() => {
+      res.redirect('/login');
+    }).catch(err => {
+      return res.status(422).render('auth/signup' , {
+        errors : [err.message],
+         isLoggedIn: false,
+        oldInput : {firstname, lastname, email, userType}
+      });
+    });
+   
 
 } ]
 exports.postLogin = (req, res , next) => {

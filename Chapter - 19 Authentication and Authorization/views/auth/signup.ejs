@@ -28,23 +28,7 @@
 
             <!-- Personal Information -->
 
-            <% if (errors.length> 0) { %>
-              <div role="alert" class="bg-red-100 border-red-400 text-redpx-4 py-3 rounded relative">
-                <strong class="font-bold">Error!</strong>
-                <span class="block sm:inline">
-
-                  <% errors.forEach(error=> { %>
-                    <li>
-                      <%= error %>
-                    </li>
-                    <% }) %>
-                </span>
-                <span class="absolute top-0 bottom-0 right-0 p-4">
-                  <i class="fas fa-times"></i>
-                </span>
-
-              </div>
-              <% } %>
+              <%- include('../partials/errors') %>
 
 
 

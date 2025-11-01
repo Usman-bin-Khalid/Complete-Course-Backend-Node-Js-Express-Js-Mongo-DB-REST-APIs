@@ -5,7 +5,9 @@ const bcrypt = require('bcryptjs')
 exports.getLogin = (req, res, next) => 
   { console.log(req.url, req.method);
  res.render("auth/login", {
-     isLoggedIn : false
+     isLoggedIn : false,
+         errors: [], 
+             oldInput: { email: '' } 
    }); 
 };
 
@@ -70,12 +72,19 @@ exports.postSignup = [
    
 
 } ]
-exports.postLogin = (req, res , next) => {
-
+exports.postLogin = async (req, res , next) => {
+  const {email, password}  = req.body;
+  const user = await User.findOne({email});
+  if(!user) {
+    return res.status(422).render('auth/login', {
+      isLoggedIn : false,
+      errors : ['User does not exist'],
+      oldInput : {email}
+    });
+  }
   console.log(req.body);
   req.session.isLoggedIn = true;
-  // res.cookie('isLoggedIn' , true);
-  // req.isLoggedIn = true;
+ 
   res.redirect('/');
 }
 

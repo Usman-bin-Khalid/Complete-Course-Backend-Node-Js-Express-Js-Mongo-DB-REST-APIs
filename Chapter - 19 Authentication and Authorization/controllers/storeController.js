@@ -5,7 +5,10 @@ exports.getHome = (req, res, next) => {
    Home.find().then(registeredHome => {
     res.render("store/home-list", 
       
-      { registeredHome: registeredHome, isLoggedIn : req.isLoggedIn, })
+      { registeredHome: registeredHome, isLoggedIn : req.isLoggedIn, 
+
+        user : req.session.user,
+      })
 });
 };
 
@@ -17,6 +20,7 @@ exports.getIndex = (req, res, next) => {
     {
       registeredHome: registeredHome,
       isLoggedIn : req.isLoggedIn,
+      user : req.session.user,
     })
   });
  
@@ -24,6 +28,7 @@ exports.getIndex = (req, res, next) => {
 exports.getBookings = (req, res, next) => {
   res.render("store/booking", {
  isLoggedIn : req.isLoggedIn,
+ user : req.session.user,
   }
   );
 };
@@ -41,6 +46,7 @@ exports.getFavouritesList = (req, res, next) => {
       res.render("store/favourite-list", {
         favouriteHomes: favouriteHomes,
         isLoggedIn : req.isLoggedIn,
+        user : req.session.user,
       });
     })
     .catch(err => {
@@ -103,6 +109,7 @@ exports.getHomeDetails = (req, res, next) => {
         
         {
           isLoggedIn : req.isLoggedIn,
+          user : req.session.user,
         home: home,
       });
     }

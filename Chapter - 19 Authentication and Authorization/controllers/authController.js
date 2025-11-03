@@ -7,7 +7,8 @@ exports.getLogin = (req, res, next) =>
  res.render("auth/login", {
      isLoggedIn : false,
          errors: [], 
-             oldInput: { email: '' } 
+             oldInput: { email: '' } ,
+             user : {}
    }); 
 };
 
@@ -17,7 +18,8 @@ exports.getSignup = (req, res, next) =>
  res.render("auth/signup", {
      isLoggedIn : false,
      errors : [],
-     oldInput : {firstname : '', lastname : '', userType : '' , password : ''}
+     oldInput : {firstname : '', lastname : '', userType : '' , password : ''},
+        user : {}
    }); 
 
 };
@@ -53,9 +55,12 @@ exports.postSignup = [
     return res.status(422).render('auth/signup', {
       isLoggedIn: false,
       errors : errors.array().map(err => err.msg),
-      oldInput : {firstname, lastname, email, userType} 
+      oldInput : {firstname, lastname, email, userType} ,
+         user : {}
     });
   }
+
+   // Password ko hash krny ky liy
     bcrypt.hash(password, 12).then(hashedPassword => {
       const user = new User({firstname, lastname, email, password : hashedPassword, userType});
       return user.save();
@@ -83,8 +88,19 @@ exports.postLogin = async (req, res , next) => {
     });
   }
   console.log(req.body);
-  req.session.isLoggedIn = true;
  
+  const isMatch = await bcrypt.compare(password, user.password);
+  if(!isMatch) {
+    return res.status(422).render('auth/login', {
+       isLoggedIn : false,
+      errors : ['Invalid Credentials'],
+      oldInput : {email},
+         user : {}
+    })
+  }
+  req.session.isLoggedIn = true;
+  req.session.user  = user;
+  await req.session.save();
   res.redirect('/');
 }
 

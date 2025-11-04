@@ -1,5 +1,6 @@
-const Favourite = require("../models/favourite");
+
 const Home = require("../models/home");
+const User = require("../models/user");
 
 exports.getHome = (req, res, next) => {
    Home.find().then(registeredHome => {
@@ -34,47 +35,28 @@ exports.getBookings = (req, res, next) => {
 };
 
 
-exports.getFavouritesList = (req, res, next) => {
-  Favourite.find()
-    .populate('houseId')
-    .then((favourites) => {
-      // Filter out favourites with missing home references
-      const favouriteHomes = favourites
-        .map(fav => fav.houseId)
-        .filter(home => home !== null);
-
-      res.render("store/favourite-list", {
-        favouriteHomes: favouriteHomes,
-        isLoggedIn : req.isLoggedIn,
-        user : req.session.user,
-      });
-    })
-    .catch(err => {
-      console.error(err);
-      next(err);
-    });
+exports.getFavouritesList = async (req, res, next) => {
+ const userId =  req.session.user._id;
+ const user = await User.findById(userId).populate('favourites');
+//  const favouriteHomes = favourites.map((fav) => fav.houseId);
+ res.render('store/favourite-list', {
+  favouriteHomes: user.favourites,
+  isLoggedIn : req.isLoggedIn,
+  user : req.session.user,
+ });
+ console.log('User: ' , user);
+ 
 };
 
-exports.postAddToFavourite = (req, res, next) => {
+exports.postAddToFavourite = async (req, res, next) => {
   const homeId = req.body.id; 
-  Favourite.findOne({houseId : homeId}).then((fav) => {
-    if(fav) {
- console.log('Already marked as favourite')
- 
-    }else {
-      fav = new Favourite({houseId : homeId});
-      fav.save().then((result) => {
-        console.log('Fav added : ' , result);
-
-      });
-    }
+  const userId =  req.session.user._id;
+  const user = await User.findById(userId);
+  if(!user.favourites.includes(homeId)) {
+  user.favourites.push(homeId);
+  await user.save();
+  }
     res.redirect('/favourites');
-     
-   
-  }).catch(err => {
-    console.log('Error while marked as favourites : ' , err);
-  });
-  
 };
 
 

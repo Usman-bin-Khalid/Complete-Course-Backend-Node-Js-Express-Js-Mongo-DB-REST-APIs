@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const favourite = require('./favourite');
+
 
 
 const homeSchema = mongoose.Schema({
@@ -28,13 +28,13 @@ const homeSchema = mongoose.Schema({
 // like favourites or any where it is use
 
 // Agr home khin sy bhi delete kry ga to ye pre hook to call hoga hi hoga
-homeSchema.pre('findOneAndDelete' , async function(next) {
-  console.log('Came to pre hook while deleting a home')
-  const homeId = this.getQuery() ['_id'];
-  await favourite.deleteMany({houseId : homeId});
-  next();
+// homeSchema.pre('findOneAndDelete' , async function(next) {
+//   console.log('Came to pre hook while deleting a home')
+//   const homeId = this.getQuery() ['_id'];
+//   await favourite.deleteMany({houseId : homeId});
+//   next();
   
-});
+// });
 
 
 

@@ -4,6 +4,7 @@ const path = require('path'); // HTML ki file ko import krny ky liy
 // External Module
 const express = require('express');
 const session = require('express-session');
+const multer = require('multer');
 // Saving Session in MongoDB
 const MongoDBStore = require('connect-mongodb-session')(session);
 const DB_Path = 'mongodb+srv://root:root@completecoding.mptdmv7.mongodb.net/airbnb?retryWrites=true&w=majority&appName=CompleteCoding'
@@ -35,8 +36,34 @@ app.use((req, res , next) => {
  next();
 });
 
+const randomString = (length) => {
+  const characters = 'bcdefghijklmnopqrstuvwxyz';
+  let result = '';
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.random() + characters.length);
+
+  }
+  return result;
+}
+
+const storage =  multer.diskStorage({
+  destination : (req, file, cb) => {
+    cb(null, 'uploads/');
+  },
+  filename : (req, file, cb) => {
+    cb(null, randomString(10) + '-' + file.originalname)
+  }
+
+})
+
+const multerOptions = {
+  storage
+
+}
+
 // Body parsing ky liy 
 app.use(express.urlencoded());
+app.use(multer(multerOptions).single('photo'));
 
 // Session set krny ky liy
 app.use(session({

@@ -54,23 +54,31 @@ const storage =  multer.diskStorage({
     cb(null, randomString(10) + '-' + file.originalname)
   }
 
-})
+});
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype === 'image/png' || file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg') {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
+
 
 const multerOptions = {
-  storage
+  storage , fileFilter
 
 }
 
 // Body parsing ky liy 
 app.use(express.urlencoded());
-app.use(multer(multerOptions).single('photo'));
+// app.use(multer(multerOptions).single('photo'));
 
 // Session set krny ky liy
 app.use(session({
   secret : 'Complete Backend With Node JS',
   resave : false,
   saveUninitialized : true,
-  store : store
+  store : store 
 }));
 
 
@@ -105,6 +113,8 @@ app.use(authRouter);
 const rootDir = require('./utils/pathUtils');
 const { error } = require('console');
 app.use(express.static(path.join(rootDir, 'public')));
+app.use('/uploads' , express.static(path.join(rootDir, 'uploads')));
+app.use('/host/uploads' , express.static(path.join(rootDir, 'uploads' )));
 
 // Errors waly controller ko import kia hy
 const errorsController = require('./controllers/errors');

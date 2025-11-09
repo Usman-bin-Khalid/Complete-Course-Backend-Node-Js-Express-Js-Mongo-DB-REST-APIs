@@ -40,8 +40,14 @@ exports.getEditHome = (req, res, next) => {
 };
 exports.postAddHome = (req, res, next) => {
   console.log("Home Registration Successfull", req.body);
-  const { houseName, price, location, rating, photo, description } =
+  const { houseName, price, location, rating,  description } =
     req.body;
+    console.log(req.file);
+    if(!req.file) {
+      console.log('No Image Provided');
+      return res.status(422).send('No image provided');
+    }
+    const photo = req.file.path;
   const home = new Home({
     houseName,
     price,
@@ -71,16 +77,20 @@ exports.getHostHomes = (req, res, next) => {
 
 exports.postEditHome = (req, res, next) => {
   console.log("Home Registration Successfull", req.body);
-  const { id, houseName, price, location, rating, photo, description } =
+  const { id, houseName, price, location, rating,  description } =
     req.body;
+
   Home.findById(id)
     .then((home) => {
       home.houseName = houseName;
       home.price = price;
       home.location = location;
       home.rating = rating;
-      home.photo = photo;
+   
       home.description = description;
+      if(req.file) {
+        home.photo = req.file.path;
+      }
 
       home
         .save()

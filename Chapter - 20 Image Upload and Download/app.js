@@ -115,6 +115,7 @@ const { error } = require('console');
 app.use(express.static(path.join(rootDir, 'public')));
 app.use('/uploads' , express.static(path.join(rootDir, 'uploads')));
 app.use('/host/uploads' , express.static(path.join(rootDir, 'uploads' )));
+app.use('/homes/uploads' , express.static(path.join(rootDir, 'uploads' )));
 
 // Errors waly controller ko import kia hy
 const errorsController = require('./controllers/errors');

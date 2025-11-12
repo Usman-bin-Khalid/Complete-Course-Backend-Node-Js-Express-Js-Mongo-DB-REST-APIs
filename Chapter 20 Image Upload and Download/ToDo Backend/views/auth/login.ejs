@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= 'Login with your info' %> | Login</title>
+  <link href="/output.css" rel="stylesheet" />
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <%- include('../partials/header') %>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="bg-white shadow-md rounded-lg p-8">
+      <h1 class="text-red-700 text-3xl italic font-bold mb-8 text-center">
+        <%= 'Login with your info' %></h1>
+      
+      <div class="max-w-md mx-auto">
+        <form action="/login" method="POST" class="space-y-6">
+  <%- include('../partials/errors') %>
+          
+            <input 
+              type="email" 
+              id="email"
+              name="email" 
+             value="<%= oldInput.email ? oldInput.email : '' %>"
+              placeholder="Enter your email" 
+              class="w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-500 focus:border-red-500 transition-colors duration-200"
+              required
+            />
+            <input 
+            
+              type = 'password'
+            
+              name="password" 
+              placeholder="Enter your password" 
+              class="w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-colors duration-200"
+              required
+            />
+  
+            <div class="text-center">
+            <button 
+              type="submit" 
+              class="inline-flex items-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200 shadow-sm"
+            >
+              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+              </svg>
+            
+             SUBMIT
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

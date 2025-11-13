@@ -67,8 +67,8 @@ const fileFilter = (req, file, cb) => {
 const multerOptions = { storage, fileFilter };
 
 // Body Parsing + CORS
-app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 // app.use(multer(multerOptions).single('photo'));
 

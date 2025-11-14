@@ -2,12 +2,17 @@ const express = require('express');
 const todoItemRouter = express.Router();
 const todoItemController = require('../controllers/todoItemController');
 
-// POST new Todo
+// Create
 todoItemRouter.post('/', todoItemController.createTodoItem);
 
-// Optional: GET all todos for visibility
+// Read
 todoItemRouter.get('/', todoItemController.getAllTodoItems);
-// ✅ Delete a todo by ID
+
+// Update
+todoItemRouter.put('/:id', todoItemController.updateTodoItem);
+
+// Delete
 todoItemRouter.delete('/:id', todoItemController.deleteTodoItem);
+
 
 module.exports = todoItemRouter;
